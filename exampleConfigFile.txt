@@ -1,3 +1,5 @@
 URL, content requirement
-http://www.google.com '<!doctype html>'
-http://www.foobar.com/login 'Please login:'
+http://www.google.com, <!doctype html>
+http://www.google.com/melon, <!doctype html>
+http://www.foobar.com/login, Please login:
+http://www.foobar.kom, Please login:

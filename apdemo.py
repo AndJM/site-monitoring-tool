@@ -1,12 +1,13 @@
 """
-Simple website monitoring tool. Uses requests. Was going with writing my own
-socket, then giving up using http.client.HTTPConnection but realized was hurting my
-chances for the job competion with other coandidiates as time might be factor!
+Simple website monitoring tool with command line utility. Uses the requests
+module.
+Comments scattered throughout indicate places for improvement
 """
 
 import argparse
 import logging
 import sys
+import time
 try:
     import requests
 except ImportError:
@@ -16,87 +17,120 @@ except ImportError:
 # create and configure logger
 LOG_FORMAT = '%(levelname)s %(asctime)s Status: %(message)s'  #  msg contains checked URLs, their status and the response times
 logging.basicConfig(filename='sitelogfile.log',
-                    level=logging.DEBUG,
+                    level=logging.INFO,
                     format=LOG_FORMAT,
                     datefmt='%Y-%m-%d %H:%M:%S'  # default ISO 8601 format
                     )
 
+
+HTML_WRAP = '''\
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Site Monitoring</title>
+    <style>
+      h1  { text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>Site Monitoring (most recent)</h1>
+%s
+  </body>
+</html>
+'''
+
+
 def get_site_status(url):
     """
-    connection level problems (e.g. the web site is down)
+    Checks for connection level problems (e.g. the web site is down)
     Measures the time it took for the web server to complete the whole request.
     """
     time_elapsed = None
+    requests_obj = None
     try:
-        r = requests.get(url)
-    except requests.exceptions.ConnectionError:
+        requests_obj = requests.get(url)
+    except requests.ConnectionError:
         msg = 'connection error'
-    except requests.exceptions.HTTPError:
+    except requests.HTTPError:
         msg = 'HTTP error occurred'
-    except requests.exceptions.Timeout:  # Requests that produced this error are safe to retry.
+    except requests.Timeout:  # future: requests that produced this error are safe to retry.
         msg = 'request timed out'
     else:
-        msg = 'site is up, status: {}'.format(r.status_code)
-        time_elapsed = str(r.elapsed)
+        msg = 'is up, code {}'.format(requests_obj.status_code)
+        time_elapsed = str(requests_obj.elapsed)
     finally:
-        return r, msg, time_elapsed
+        return requests_obj, msg, time_elapsed
 
 
 def check_content(requests_obj, content_requirement):
     """
-    content problems (e.g. the content requirements were not fulfilled)
-    Verifies that the page content received from the server matches the content requirements.
+    Verifies that the page content received from
+    the server matches the content requirements.
     """
     return content_requirement in requests_obj.text  # future: probably re is better for more sophisticated requirements
 
 
 def check_sites(filename):
     """
-    Writes a log file that shows the progress of the periodic checks.
+    The workhorse: handles the file IO, calls the other functions,
+    writes a log file that shows the progress of the periodic checks.
     """
+    messages = []
     with open(filename, 'r') as f:
-        for url in load_file(f):
+        for url, content_requirement in load_file(f):
             r, msg, time_elapsed = get_site_status(url)
-            if time_elapsed == None:
-
-            logging.warning(' '.join([url, msg]))
-            check_content(url)
-                    logging.info(' '.join([url, msg, time_elapsed]))
-
-
+            if time_elapsed is None:
+                msg = ' '.join([url, msg])
+                logging.warning(msg)
+                messages.append(msg)
+            else:
+                result = check_content(r, content_requirement)
+                msg = ' '.join([url, msg, "Time elapsed:", time_elapsed, "Contains content:", str(result)])
+                logging.info(msg)
+                messages.append(msg)
+    return messages
 
 
 def load_file(file):
     file.readline()  # throw away first line
     for line in file:
-        line.strip()
-        yield line
+        yield [token.strip() for token in line.split(',')]
 
 
 def _launch():
-    parser = argparse.ArgumentParser(prog='python -m apdemo',
+    """
+    Invokes the command line utility, allows configuring the waiting period.
+    """
+    parser = argparse.ArgumentParser(prog='python apdemo',
                                      description='Simple program and command line utility for site monitoring')
-
-    parser.add_argument('filename', action='store',
-                        dest='my_value_name',
-                        help='Store a simple value')
-
-    parser.add_argument('-t', action='store',
+    parser.add_argument('filename',
+                        help='filename is of file containing the URLs and corresponding page content requirements <URL string>')
+    parser.add_argument('-t',
+                        type=int,
                         dest='checking_period',
-                        help='Change default checking period')
-
-    parser.add_argument('--version', action='version',
+                        default=1800,
+                        help='Change default checking period in seconds')
+    parser.add_argument('--version',
+                        action='version',
                         version='%(prog)s 1.0')
+    try:
+        args = parser.parse_args()  # namespace containing the arguments to the command
+    except IOError as msg:
+        parser.error(str(msg))
 
-    args = parser.parse_args()  # namespace containing the arguments to the command
-
-
-
-
-    # check for internet connectivity
-
-    # Periodically makes an HTTP request to each page
-    make_check(args.filename)
+    # future: check first for internet connectivity!
+    while True:
+        messages = check_sites(args.filename)
+        message_string = ''
+        for m in messages:
+            message_string += '<h1>' + m + '</h1><br>'
+        #  single-page HTTP server interface in the same process that shows
+        # (HTML) each monitored web site and their current (last check) status.
+        # python -m http.server 8080
+        # access the url: http://localhost:8080/
+        with open('index.html', 'w') as file:
+            file.write(HTML_WRAP % message_string)
+        time.sleep(args.checking_period)  # Periodically makes an HTTP request to each page every half hour
 
 
 if __name__ == '__main__':
