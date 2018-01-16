@@ -1,0 +1,3 @@
+URL, content requirement
+http://www.google.com '<!doctype html>'
+http://www.foobar.com/login 'Please login:'
