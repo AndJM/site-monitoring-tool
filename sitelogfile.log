@@ -1,0 +1,32 @@
+INFO 2018-01-16 04:36:26 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.069356 Contains content: True
+INFO 2018-01-16 04:36:26 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.019170 Contains content: False
+INFO 2018-01-16 04:36:26 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.286920 Contains content: False
+WARNING 2018-01-16 04:36:26 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:36:36 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.071446 Contains content: True
+INFO 2018-01-16 04:36:36 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.022328 Contains content: False
+INFO 2018-01-16 04:36:36 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.293362 Contains content: False
+WARNING 2018-01-16 04:36:36 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:36:46 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.070404 Contains content: True
+INFO 2018-01-16 04:36:47 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.022789 Contains content: False
+INFO 2018-01-16 04:36:47 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.289820 Contains content: False
+WARNING 2018-01-16 04:36:47 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:36:57 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.074353 Contains content: True
+INFO 2018-01-16 04:36:57 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.027885 Contains content: False
+INFO 2018-01-16 04:36:57 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.293214 Contains content: False
+WARNING 2018-01-16 04:36:57 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:37:07 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.068738 Contains content: True
+INFO 2018-01-16 04:37:07 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.023693 Contains content: False
+INFO 2018-01-16 04:37:08 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.287098 Contains content: False
+WARNING 2018-01-16 04:37:08 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:37:18 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.070445 Contains content: True
+INFO 2018-01-16 04:37:18 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.022423 Contains content: False
+INFO 2018-01-16 04:37:18 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.285593 Contains content: False
+WARNING 2018-01-16 04:37:18 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:37:28 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.069241 Contains content: True
+INFO 2018-01-16 04:37:28 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.019638 Contains content: False
+INFO 2018-01-16 04:37:29 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.286253 Contains content: False
+WARNING 2018-01-16 04:37:29 Status: http://www.foobar.kom connection error
+INFO 2018-01-16 04:37:39 Status: http://www.google.com is up, code 200 Time elapsed: 0:00:00.071167 Contains content: True
+INFO 2018-01-16 04:37:39 Status: http://www.google.com/melon is up, code 404 Time elapsed: 0:00:00.020716 Contains content: False
+INFO 2018-01-16 04:37:39 Status: http://www.foobar.com/login is up, code 404 Time elapsed: 0:00:00.296152 Contains content: False
+WARNING 2018-01-16 04:37:39 Status: http://www.foobar.kom connection error
